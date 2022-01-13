@@ -3,47 +3,45 @@ import { useState } from "react";
 import { Button, TextField, Box, Grid, styled, Paper } from "@mui/material";
 
 function App() {
-  const [cipherCode, setCipherCode] = useState("");
-  const [diCipherCode, setDiCipherCode] = useState("");
+  const [plainText, setplainText] = useState("");
+  const [cipherText, setcipherText] = useState("");
 
-  function isCharacterALetter(char) {
-    return /[a-zA-Z]/.test(char);
-  }
-
-  function cipherToDicipher() {
-    let str = cipherCode;
+  /**
+   * It converts plain text to cipher text
+   */
+  function plainToCipher() {
+    let str = plainText;
     let result = [...str]
       .map((ch) =>
-        ch == ch.toUpperCase() && isCharacterALetter(ch)
+        ch == ch.toUpperCase()
           ? String.fromCharCode(
-              "Z".charCodeAt(0) - ch.charCodeAt(0) + "A".charCodeAt(0)
+              "Z".charCodeAt(0) - ch.charCodeAt(0) + "A".charCodeAt(0) // if it is uppercase then substract from 'Z'
             )
-          : ch == ch.toLowerCase() && isCharacterALetter(ch)
-          ? String.fromCharCode(
-              "z".charCodeAt(0) - ch.charCodeAt(0) + "a".charCodeAt(0)
+          : String.fromCharCode(
+              "z".charCodeAt(0) - ch.charCodeAt(0) + "a".charCodeAt(0) // if it is uppercase then substract from 'z'
             )
-          : ch
       )
       .join("");
-    setDiCipherCode(result);
+    setcipherText(result);
   }
 
-  function diCipherTocipher() {
-    let str = diCipherCode;
+  /**
+   * It converts cipher text to plain text
+   */
+  function cipherToPlain() {
+    let str = cipherText;
     let result = [...str]
       .map((ch) =>
-        ch == ch.toUpperCase() && isCharacterALetter(ch)
+        ch == ch.toUpperCase()
           ? String.fromCharCode(
               "A".charCodeAt(0) + "Z".charCodeAt(0) - ch.charCodeAt(0)
             )
-          : ch == ch.toLowerCase() && isCharacterALetter(ch)
-          ? String.fromCharCode(
+          : String.fromCharCode(
               "a".charCodeAt(0) + "z".charCodeAt(0) - ch.charCodeAt(0)
             )
-          : ch
       )
       .join("");
-    setCipherCode(result);
+    setplainText(result);
   }
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -76,9 +74,9 @@ function App() {
               rows={5}
               maxRows={15}
               label="Plain Text"
-              onChange={(e) => setCipherCode(e.target.value)}
+              onChange={(e) => setplainText(e.target.value)}
               color="secondary"
-              value={cipherCode}
+              value={plainText}
             />
           </Grid>
           <Grid item xs={6}>
@@ -93,9 +91,9 @@ function App() {
               multiline
               maxRows={15}
               label="Ciphered Text"
-              onChange={(e) => setDiCipherCode(e.target.value)}
+              onChange={(e) => setcipherText(e.target.value)}
               color="secondary"
-              value={diCipherCode}
+              value={cipherText}
             />
           </Grid>
           <Grid item xs={6}>
@@ -104,7 +102,7 @@ function App() {
               variant="contained"
               color="success"
               onClick={() => {
-                cipherToDicipher();
+                plainToCipher();
               }}
             >
               Cipher
@@ -116,7 +114,7 @@ function App() {
               variant="contained"
               color="primary"
               onClick={() => {
-                diCipherTocipher();
+                cipherToPlain();
               }}
             >
               Dicipher
